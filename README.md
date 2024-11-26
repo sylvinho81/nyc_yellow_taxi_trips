@@ -169,11 +169,10 @@ can calculate the number for any range.
     download the parquet files again.
   - download_multiple_parquet_and_get_trips: It downloads the parquet files specified by the client and calculates the number of trips over the percentile by reading the files download and stored in Minio.
 - In order to improve the performance of downloading the parquet files to store it in MinIO I implemented different improvements:
-  - since the server supports range requests I implemented the 
-  download functionality with a couple of improvements:
-    - Download files in parallel by gathering the different download tasks (files)
-    - For each file download it in chunks.
-      - The ckunk size by default is 10,000,000 bytes (10 MB). This is because the Content-Length of the file I have analyzed  is 50 MB more or less. For large 
+  - since the server supports range requests I implemented the download functionality with a couple of improvements:
+    - Download files in parallel by gathering the different "download tasks (files)"
+    - For each file, download it in chunks.
+      - The chunk size by default is 10,000,000 bytes (10 MB). This is because the Content-Length of the file I have analyzed  is 50 MB more or less. For large 
       files a chunk size of 10MB is fine. By configuring this the file could be downloaded in 5 chunks of 10 MB each. Since in the API it is available a parameter
       to define the size of the chunk we could play with it. 
   - since the server is using the HTTP/2 protocol I configured http2=True because:
@@ -181,6 +180,7 @@ can calculate the number for any range.
     - By reusing a single TCP connection, HTTP/2 minimizes connection setup and teardown time.
 - We need to consider that the server from which we get the parquet files could return HTTP/2 403 Forbidden Error, so we would need to consider to implement
 retry mechanism like exponential backoff, etc 
+- We should also consider possible timeouts
 
 ##### MinIO
 
@@ -230,6 +230,7 @@ to Tinybird engineers my assumption is that you want to see what are my approach
   ensure data reliability or enrich the data storing the files in own server in MinIO (or similar data lake) gives us control, scalability, etc
 
 - I didn't implement any kind of authentication in the API. I could add simple token authentication but I decided not to expend time on this. 
+- - I didn't expect time on doing validations through Pydantic of the parameters of the different API endpoints. 
 - In a Production environment it could be interesting to have a QA tool in place like Great Expectation to validate the quality of the data.
 - In a Production environment if we want to be able to orchestrate all the process and since the data is available monthly with a delay of two months
 we could have an orchestrator like Airflow to orchestrate the workflow, Spark for doing data cleaning like dropping unnecessary columns, handling missing values,
