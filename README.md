@@ -231,7 +231,7 @@ to Tinybird engineers my assumption is that you want to see what are my approach
   ensure data reliability or enrich the data storing the files in own server in MinIO (or similar data lake) gives us control, scalability, etc
 
 - I didn't implement any kind of authentication in the API. I could add simple token authentication but I decided not to expend time on this. 
-- - I didn't expect time on doing validations through Pydantic of the parameters of the different API endpoints. 
+- I didn't expect time on doing validations through Pydantic of the parameters of the different API endpoints. 
 - In a Production environment it could be interesting to have a QA tool in place like Great Expectation to validate the quality of the data.
 - In a Production environment if we want to be able to orchestrate all the process and since the data is available monthly with a delay of two months
 we could have an orchestrator like Airflow to orchestrate the workflow, Spark for doing data cleaning like dropping unnecessary columns, unifying schemas, handling missing values,
