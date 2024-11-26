@@ -233,7 +233,7 @@ to Tinybird engineers my assumption is that you want to see what are my approach
 - - I didn't expect time on doing validations through Pydantic of the parameters of the different API endpoints. 
 - In a Production environment it could be interesting to have a QA tool in place like Great Expectation to validate the quality of the data.
 - In a Production environment if we want to be able to orchestrate all the process and since the data is available monthly with a delay of two months
-we could have an orchestrator like Airflow to orchestrate the workflow, Spark for doing data cleaning like dropping unnecessary columns, handling missing values,
+we could have an orchestrator like Airflow to orchestrate the workflow, Spark for doing data cleaning like dropping unnecessary columns, unifying schemas, handling missing values,
 drop outliers (eg drop rows where pickup time is no earlier than dropff time) etc and ingest the data into the data lake partitioned by date. 
 By having this setup we could schedule to run the load of the parquet files monthly so when the user would need to request the data it would be already available
 in the data lake and Clickhouse. 
