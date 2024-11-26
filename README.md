@@ -193,6 +193,7 @@ there are expensive footer reads to gather statistics for file skipping
 skip over unnecessary files and columns. Parquet files do not have this feature.
  - Schema evolution
  - etc 
+The raw parquet files extracted from the trip data are stored by the app in the bucket ny-yellow-taxis inside the path ny-yellow-taxis/bronze.
 
 ##### Clickhouse 
 Clickhouse allow us to execute queries over Parquet files stored in a storage system like s3. In this case I am using MinIO in my local environment
