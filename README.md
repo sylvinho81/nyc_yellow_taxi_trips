@@ -137,8 +137,9 @@ our servers in advance (data lake with MinIO or physically stored in Clickhouse 
 - I decided to choose JSON format output for the API because it is lightweight data-interchange format that is easy for humans to read and easy for third party 
 services to parse.
 - If I would decide to store physically the data in Clickhouse or a similar datawarehouse I would probably store some extra columns apart from the measure
-trip distance to be able to give to the client the same report by grouped by vendor_id or location (in which the taximeter was engaged or where it was disengaged).
-- Probably I would partition the parquet files in MinIO and Clickhouse fact table by year month day extracted from tpep_pickup_datetime
+trip distance to be able to give to the client the same report grouped by vendor_id or location (in which the taximeter was engaged or where it was disengaged).
+- Probably I would partition the parquet files in MinIO by year month day (extracted from tpep_pickup_datetime) and Clickhouse fact table by toYYYYMM(tpep_pickup_datetime). 
+By doing this queries that filter by date range can efficiently access only the relevant partitions, reducing the amount of data scanned.
 
 ### Solution and tech stack: 
 
