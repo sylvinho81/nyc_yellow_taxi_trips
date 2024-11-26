@@ -219,11 +219,19 @@ to Tinybird engineers my assumption is that you want to see what are my approach
 
 ## Final Thoughts
 
-We could also decide to query directly the data stored in the external server by doing from Clickhouse
+- We could also decide to query directly the data stored in the external server by doing from Clickhouse
 
-```
-select trip_distance from s3('https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-01.parquet', 'Parquet');
-```
+  ```
+  select trip_distance from s3('https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-01.parquet', 'Parquet');
+  ```
+  
+  This is fine for  ad hoc analysis or prototyping. However, for production workflows, where: we need to query the data repeatedly, 
+  ensure data reliability or enrich the data storing the files in own server in MinIO (or similar data lake) gives us control, scalability, etc
 
-This is fine for  ad hoc analysis or prototyping. However, for production workflows, where: we need to query the data repeatedly, 
-ensure data reliability or enrich the data storing the files in own server in MinIO (or similar data lake) gives us control, scalability, etc
+- I didn't implement any kind of authentication in the API. I could add simple token authentication but I decided not to expend time on this. 
+- In a Production environment it could be interesting to have a QA tool in place like Great Expectation to validate the quality of the data.
+- In a Production environment if we want to be able to orchestrate all the process and since the data is available monthly with a delay of two months
+we could have an orchestrator like Airflow to orchestrate the workflow, Spark for doing data cleaning like dropping unnecessary columns, handling missing values,
+drop outliers (eg drop rows where pickup time is no earlier than dropff time) etc and ingest the data into the data lake partitioned by date. 
+By having this setup we could schedule to run the load of the parquet files monthly so when the user would need to request the data it would be already available
+in the data lake and Clickhouse. 
