@@ -106,6 +106,11 @@ Based on the requirements we need to provide a rest API to expose the result for
   
 ### How would you ensure the solution scale and the endpoint has a low latency? 
 
+The entire solution is containerized using Docker These Docker containers are orchestrated using Kubernetes. 
+Each API instance or micro-service runs in a Docker container, managed by Kubernetes pods, allowing independent scaling and management.
+Each microservice and API is deployed as a Kubernetes Deployment, with pods managed and scaled dynamically through Kubernetes Horizontal Pod Autoscaler (HPA)
+based on workload metrics like CPU, memory, and request rates.
+
 #### Scaling Python - Kafka microservices
 
 By applying horizontal scaling (e.g HPA: Kubernetes with multiple replicas). Based on the consumer lag increase the number of replicas
