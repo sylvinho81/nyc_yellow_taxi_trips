@@ -23,7 +23,9 @@ For the ingestion process I would propose two different microservices:
 different parquet files and generating an event per chunk where the id of the event would be the combinations of the "filename" and "chunk_id". The events would
 look something like this:
 
+```
 key: filename + chunk_id
+
 value: {
     "filename": ""
     "chunk_id": "1",
@@ -32,6 +34,7 @@ value: {
     "chunk_start": "",
     "chunk_end": ""
 }
+```
 
 2. Ingestion service. This service will consume the previous events and start to download the parquet files in parallel by chunks and store 
 the data into the Data Storage (by following the approach I implemented before). 
@@ -78,7 +81,7 @@ Based on the requirements we need to provide a rest API to expose the result for
     
 
 - Clickhouse:
-
+  ```
     Partition By: toYYYYMM(tpep_pickup_datetime)
     
     Order By: (tpep_pickup_datetime, trip_distance)
@@ -86,10 +89,10 @@ Based on the requirements we need to provide a rest API to expose the result for
     Engine: MergeTree or ReplicatedMergeTree
     
     Partitioning allows ClickHouse to skip entire partitions that don’t match the query filter, reducing the amount of data scanned and memory used. This can significantly improve query performance, especially for large datasets.
-
+  ```
 
 - DuckDB and MinIO with Delta Lake:
-
+  ```
     Partition By: year, month, day of tpep_pickup_datetime
     
     Z-Order by: (tpep_pickup_datetime, trip_distance)
@@ -99,7 +102,8 @@ Based on the requirements we need to provide a rest API to expose the result for
     Z-Order Indexing: Delta Lake supports z-order indexing, which improves query performance by allowing query engines to skip over unnecessary files and columns. Parquet files do not have this feature.
 
     Compaction: merging small files into larger ones, reducing the overall number of files and rebalance the data
-
+  ```
+  
 ### How would you ensure the solution scale and the endpoint has a low latency? 
 
 #### Scaling Python - Kafka microservices
