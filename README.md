@@ -239,3 +239,9 @@ we could have an orchestrator like Airflow to orchestrate the workflow, Spark fo
 drop outliers (eg drop rows where pickup time is no earlier than dropff time) etc and ingest the data into the data lake partitioned by date. 
 By having this setup we could schedule to run the load of the parquet files monthly so when the user would need to request the data it would be already available
 in the data lake and Clickhouse. 
+
+## Others 
+
+### Streaming
+
+#### [Requirements and Questions](01_streaming.md)
