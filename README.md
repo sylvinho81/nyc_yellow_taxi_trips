@@ -12,6 +12,7 @@ Return all the trips over 0.9 percentile in distance traveled
 $ curl -I -X HEAD https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-01.parquet
 ```
 
+```
 HTTP/2 200 
 content-type: binary/octet-stream
 content-length: 49961641
@@ -26,7 +27,7 @@ via: 1.1 7270d267f6bffc8aa59d396dd86d60a8.cloudfront.net (CloudFront)
 x-amz-cf-pop: MAD53-P3
 x-amz-cf-id: 0Ep7Wns-topETwfGVULkQkLh86IGEUoiwiq9y6FjizvFXVicLwY2yg==
 age: 32662
-
+```
 
 By analyzing the output we can gather interesting information to resolve the client request:
 
