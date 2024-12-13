@@ -156,3 +156,18 @@ And as I explained before those metrics would be used to autoscale the different
 #### Logs and Traces
 
 Store logs centrally and analyze them for errors (e.g Loki)
+
+
+### In your solution, you are using Kafka to process the metadata and connect the scheduler with the ingestion service. Why do you do it that way?
+
+Because in that way the services watcher-scheduler and ingestion are decoupled and can be scaled independently:
+
+- The watcher-scheduler service can produce metadata events (file-chunks) to Kafka as soon as new files are detected. In this way it can produce metadata events 
+without waiting for the ingestion service to complete, improving overall responsiveness. 
+- The ingestion service can independently consume these events and process them at its own pace.
+
+It is also efficient and provides resilience: 
+
+- It provides buffering. If there’s a sudden spike in new files, the metadata can queue up in Kafka, allowing the ingestion process to catch up gradually. As
+I mentioned before by using the metric consumer lag, if a sudden spike happens we can scale up and down easily with HPA (K8s)
+- It a failure occurs processing the metadata events it can be retried without the need to have to check the new files and calculate the chunks.
