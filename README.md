@@ -124,7 +124,7 @@ $ docker-compose exec clickhouse clickhouse-client
   - I would skip those one from the calculation
   - Apart from calculating the number of trips over the percentile, in a production environment I would provide the total of trips for the 
   specific time range to provide some context. 
-- Based on the feedback I got from Alejandra:
+- Based on the feedback I got from the client:
   - I don't need to provide any kind of visualization.
   - The process would need to run on demand, repeatedly. 
   - We don't need to consider any external service to build the solution like GCP, AWS, ...
@@ -217,7 +217,7 @@ as efficient for querying as CH with its optimizations. We could partition the f
 ## Unit and Integration tests.
 
 I didn't consider for this kind of challenge to expend time on implementing unit and integration tests. From the conversations and questions I have asked 
-to Tinybird engineers my assumption is that you want to see what are my approaches, how I think, etc instead of expending time on implementation details.
+to the client my assumption is that you want to see what are my approaches, how I think, etc instead of expending time on implementation details.
 
 
 ## Final Thoughts
